@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Recensioni Vestila</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: riepilogo rete in alto, poi una card per negozio (2 colonne su desktop), mappa schematica e andamento in fondo */
+:root{
+  --bg:#f6f3f5; --surface:#ffffff; --ink:#2a1f2d; --muted:#6f6272; --line:#e6dde4;
+  --accent:#a8295f; --accent-soft:#f7e3ec; --carpisa:#1f7a6c; --carpisa-soft:#ddf0ec;
+  --good:#2f7d4f; --good-soft:#e1f2e7; --warn:#a86a12; --warn-soft:#f8ecd6; --star:#d99a1c;
+  --f-display:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#18131a; --surface:#221b25; --ink:#f1e9ef; --muted:#a898a6; --line:#3a2f3d;
+  --accent:#ec7aa9; --accent-soft:#3d2230; --carpisa:#5cc4b2; --carpisa-soft:#183631;
+  --good:#6fcf95; --good-soft:#1b3326; --warn:#e7b25a; --warn-soft:#3a2c14; --star:#f0b847;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#18131a; --surface:#221b25; --ink:#f1e9ef; --muted:#a898a6; --line:#3a2f3d;
+  --accent:#ec7aa9; --accent-soft:#3d2230; --carpisa:#5cc4b2; --carpisa-soft:#183631;
+  --good:#6fcf95; --good-soft:#1b3326; --warn:#e7b25a; --warn-soft:#3a2c14; --star:#f0b847;
+  color-scheme:dark}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.7rem,4vw,2.3rem);margin:0;letter-spacing:-.01em;text-wrap:balance}
+h2{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:0}
+.eyebrow{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.stamp{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.summary div{background:var(--surface);padding:16px 18px;display:grid;gap:4px}
+.summary .big{font-family:var(--f-display);font-size:1.9rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.summary small{color:var(--muted);font-size:.82rem}
+
+.stores{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:14px;min-width:0}
+.card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.card h3{font-family:var(--f-display);font-size:1.2rem;margin:0}
+.addr{color:var(--muted);font-size:.85rem}
+.chip{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.chip.carpisa{background:var(--carpisa-soft);color:var(--carpisa)}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.metrics div{display:grid;gap:2px;min-width:0}
+.metrics .v{font-family:var(--f-display);font-size:1.45rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.15}
+.metrics .l{font-size:.75rem;color:var(--muted)}
+.stars{color:var(--star);letter-spacing:1px;font-size:.85rem}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:.78rem;font-weight:600;padding:2px 8px;border-radius:999px;font-family:var(--f-mono)}
+.pill.up{background:var(--good-soft);color:var(--good)}
+.pill.flat{background:var(--warn-soft);color:var(--warn)}
+.pill.none{background:var(--bg);color:var(--muted)}
+.spark{width:100%;height:46px;display:block}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:inherit;font-size:.85rem;font-weight:600;padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn.primary:hover{filter:brightness(1.08);color:var(--surface)}
+.reviewlink{display:none;font-family:var(--f-mono);font-size:.75rem;color:var(--muted);word-break:break-all;background:var(--bg);padding:8px 10px;border-radius:8px}
+.reviewlink.show{display:block}
+
+.lower{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:16px}
+@media (max-width:760px){.lower{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;min-width:0}
+.panel p{margin:0;color:var(--muted);font-size:.88rem;max-width:62ch}
+svg text{font-family:var(--f-body)}
+.chartbox{overflow-x:auto}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:3px;border-radius:2px;display:inline-block}
+.note{font-size:.82rem;color:var(--muted);max-width:70ch}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:9px;font-size:.85rem;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+.headright{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.loginwrap{min-height:100vh;display:grid;place-items:center;padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.loginbox{width:min(100%,380px);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px;display:grid;gap:10px}
+.loginbox h1{font-size:1.6rem;margin-bottom:8px}
+.loginbox label{font-size:.82rem;font-weight:600;color:var(--muted)}
+.loginbox input{font:inherit;padding:10px 12px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.loginbox input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.loginbox .btn{justify-content:center;margin-top:8px;padding:11px}
+.loginerr{margin:0;min-height:1.3em;color:var(--accent);font-size:.85rem}
+</style>
+
+</head>
+<body>
+<div class="loginwrap" id="login" hidden>
+  <form class="loginbox" id="loginform" autocomplete="on">
+    <div class="eyebrow">Vestila Srl · area riservata</div>
+    <h1>Recensioni dei negozi</h1>
+    <label for="user">Utente</label>
+    <input id="user" name="username" autocomplete="username" required autocapitalize="none" spellcheck="false">
+    <label for="pass">Password</label>
+    <input id="pass" name="password" type="password" autocomplete="current-password" required>
+    <button class="btn primary" type="submit" id="loginbtn">Entra</button>
+    <p class="loginerr" id="loginerr" role="alert"></p>
+  </form>
+</div>
+<div class="wrap" id="app" hidden>
+  <header>
+    <div>
+      <div class="eyebrow">Vestila Srl · Google Maps</div>
+      <h1>Recensioni dei negozi</h1>
+    </div>
+    <div class="headright"><div class="stamp" id="stamp">Caricamento dati…</div><button class="btn" type="button" id="logout">Esci</button></div>
+  </header>
+
+  <section class="summary" aria-label="Riepilogo rete">
+    <div><span class="eyebrow">Recensioni totali</span><span class="big" id="s-total">—</span><small>4 negozi</small></div>
+    <div><span class="eyebrow">Nuove · 7 giorni</span><span class="big" id="s-7">—</span><small id="s-7n">serve una settimana di storico</small></div>
+    <div><span class="eyebrow">Nuove · 30 giorni</span><span class="big" id="s-30">—</span><small id="s-30n">serve un mese di storico</small></div>
+    <div><span class="eyebrow">Voto medio rete</span><span class="big" id="s-avg">—</span><small>pesato sul numero di recensioni</small></div>
+  </section>
+
+  <section class="stores" id="stores" aria-label="Negozi"></section>
+
+  <section class="lower">
+    <div class="panel">
+      <h2>Dove sono</h2>
+      <div id="map"></div>
+      <p>Posizione relativa dei punti vendita. Tocca un negozio per aprirlo su Google Maps.</p>
+    </div>
+    <div class="panel">
+      <h2>Recensioni nel tempo</h2>
+      <div class="legend" id="legend"></div>
+      <div class="chartbox" id="chart"></div>
+    </div>
+  </section>
+
+  <p class="note">I dati vengono letti ogni mattina dalle schede pubbliche di Google. Le schede sono gestite da Yamamay e Carpisa: qui si misura quante recensioni arrivano e con che voto. Il pulsante "Link per recensione" porta il cliente direttamente alla finestra per scriverla: si può stampare come QR in cassa.</p>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const STORES=[
+  {id:"gavirate",name:"Yamamay Gavirate",brand:"Yamamay",addr:"CC Campo dei Fiori, Viale Ticino 82",lat:45.8387986,lng:8.7042279,cid:"11190638342281315056",pid:"ChIJRSc2jAJ5hkcR8EKLIUgiTZs",color:"#c23b74",colorDark:"#f08bb5"},
+  {id:"arona",name:"Yamamay Arona",brand:"Yamamay",addr:"Via Cavour 22-24, Arona",lat:45.7607265,lng:8.5616252,cid:"10459460889405083552",pid:"ChIJ4TV8coBxhkcRoM8UJ0N4J5E",color:"#7a3fa0",colorDark:"#c49be0"},
+  {id:"luino_yamamay",name:"Yamamay Luino",brand:"Yamamay",addr:"Via Vittorio Veneto 20, Luino",lat:46.0004913,lng:8.7406577,cid:"1153000360252016844",pid:"ChIJqRa1803QhUcRzAi4ArhHABA",color:"#c27a1f",colorDark:"#f0b866"},
+  {id:"luino_carpisa",name:"Carpisa Luino",brand:"Carpisa",addr:"Via Vittorio Veneto 4, Luino",lat:46.0011602,lng:8.7410329,cid:"3450505891270604113",pid:"ChIJfawOyE3QhUcRUbWTmNOo4i8",color:"#1f7a6c",colorDark:"#5cc4b2"}
+];
+let SNAPS=[]; // [{date:"YYYY-MM-DD", stores:{id:{rating,count}}}]
+
+const $=s=>document.querySelector(s);
+const isDark=()=>{const t=document.documentElement.dataset.theme;if(t)return t==="dark";return matchMedia("(prefers-color-scheme: dark)").matches};
+const col=s=>isDark()?s.colorDark:s.color;
+const fmtDate=d=>new Date(d+"T12:00:00").toLocaleDateString("it-IT",{day:"numeric",month:"short",year:"numeric"});
+const fmtShort=d=>new Date(d+"T12:00:00").toLocaleDateString("it-IT",{day:"numeric",month:"short"});
+const dayDiff=(a,b)=>Math.round((new Date(a+"T12:00:00")-new Date(b+"T12:00:00"))/864e5);
+function stars(r){const f=Math.round(r);return "★".repeat(f)+"☆".repeat(5-f)}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),1800)}
+
+// count `days` ago: snapshot closest at or before that date
+function countAt(id,days){
+  if(!SNAPS.length)return null;
+  const last=SNAPS[SNAPS.length-1].date;
+  let best=null;
+  for(const s of SNAPS){const d=dayDiff(last,s.date);if(d>=days&&s.stores[id])best=s}
+  return best?best.stores[id].count:null;
+}
+function delta(id,days){
+  const last=SNAPS[SNAPS.length-1];if(!last||!last.stores[id])return null;
+  const prev=countAt(id,days);return prev==null?null:last.stores[id].count-prev;
+}
+function pill(d){
+  if(d==null)return '<span class="pill none">storico in arrivo</span>';
+  if(d>0)return `<span class="pill up">+${d}</span>`;
+  return `<span class="pill flat">${d===0?"nessuna":d}</span>`;
+}
+
+function spark(id,color){
+  const pts=SNAPS.filter(s=>s.stores[id]).map(s=>s.stores[id].count);
+  const W=300,H=46,p=4;
+  if(pts.length<2){
+    return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><line x1="${p}" x2="${W-p}" y1="${H/2}" y2="${H/2}" stroke="var(--line)" stroke-dasharray="4 4"/><circle cx="${W-p}" cy="${H/2}" r="3.5" fill="${color}"/></svg>`;
+  }
+  const min=Math.min(...pts),max=Math.max(...pts),rng=Math.max(1,max-min);
+  const xy=pts.map((v,i)=>[p+i*(W-2*p)/(pts.length-1),H-p-(v-min)/rng*(H-2*p)]);
+  const line=xy.map((q,i)=>(i?"L":"M")+q[0].toFixed(1)+" "+q[1].toFixed(1)).join(" ");
+  const area=line+` L${xy[xy.length-1][0].toFixed(1)} ${H} L${xy[0][0].toFixed(1)} ${H} Z`;
+  const e=xy[xy.length-1];
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${area}" fill="${color}" opacity=".12"/><path d="${line}" fill="none" stroke="${color}" stroke-width="2" vector-effect="non-scaling-stroke"/><circle cx="${e[0]}" cy="${e[1]}" r="3.5" fill="${color}"/></svg>`;
+}
+
+function renderStores(){
+  const last=SNAPS[SNAPS.length-1];
+  $("#stores").innerHTML=STORES.map(s=>{
+    const cur=last&&last.stores[s.id];
+    const d7=delta(s.id,7),d30=delta(s.id,30);
+    const review=`https://search.google.com/local/writereview?placeid=${s.pid}`;
+    return `<article class="card">
+      <div class="card-top"><div><h3>${s.name}</h3><div class="addr">${s.addr}</div></div><span class="chip ${s.brand==="Carpisa"?"carpisa":""}">${s.brand}</span></div>
+      <div class="metrics">
+        <div><span class="v">${cur?cur.rating.toFixed(1).replace(".",","):"—"}</span><span class="l stars">${cur?stars(cur.rating):"&nbsp;"}</span></div>
+        <div><span class="v">${cur?cur.count:"—"}</span><span class="l">recensioni</span></div>
+        <div><span class="v">${pill(d7)}</span><span class="l">ultimi 7 giorni</span></div>
+        <div><span class="v">${pill(d30)}</span><span class="l">ultimi 30 giorni</span></div>
+      </div>
+      ${spark(s.id,col(s))}
+      <div class="actions">
+        <a class="btn primary" href="https://maps.google.com/?cid=${s.cid}" target="_blank" rel="noopener">Apri su Maps ↗</a>
+        <button class="btn" type="button" id="copy-${s.id}" data-link="${review}">Link per recensione</button>
+      </div>
+      <div class="reviewlink" id="rl-${s.id}">${review}</div>
+    </article>`}).join("");
+  STORES.forEach(s=>{
+    const b=$("#copy-"+s.id);
+    b.addEventListener("click",async()=>{
+      const box=$("#rl-"+s.id);box.classList.add("show");
+      try{await navigator.clipboard.writeText(b.dataset.link);toast("Link copiato")}
+      catch(e){const r=document.createRange();r.selectNodeContents(box);const sel=getSelection();sel.removeAllRanges();sel.addRange(r);toast("Link selezionato: copialo")}
+    });
+  });
+}
+
+function renderSummary(){
+  const last=SNAPS[SNAPS.length-1];
+  if(!last){$("#stamp").textContent="Nessun dato ancora: il primo rilevamento arriva domattina";return}
+  let tot=0,w=0;STORES.forEach(s=>{const c=last.stores[s.id];if(c){tot+=c.count;w+=c.rating*c.count}});
+  $("#s-total").textContent=tot;
+  $("#s-avg").textContent=tot?(w/tot).toFixed(2).replace(".",","):"—";
+  const sum=days=>{let t=0,ok=false;STORES.forEach(s=>{const d=delta(s.id,days);if(d!=null){t+=d;ok=true}});return ok?t:null};
+  const s7=sum(7),s30=sum(30);
+  $("#s-7").textContent=s7==null?"—":(s7>0?"+"+s7:s7);
+  $("#s-30").textContent=s30==null?"—":(s30>0?"+"+s30:s30);
+  if(s7!=null)$("#s-7n").textContent="in tutta la rete";
+  if(s30!=null)$("#s-30n").textContent="in tutta la rete";
+  const first=SNAPS[0].date;
+  $("#stamp").textContent=`Ultimo rilevamento ${fmtDate(last.date)} · storico dal ${fmtShort(first)}`;
+}
+
+function renderMap(){
+  const W=320,H=260,p=34;
+  const lats=STORES.map(s=>s.lat),lngs=STORES.map(s=>s.lng);
+  const minLa=Math.min(...lats)-.04,maxLa=Math.max(...lats)+.04,minLn=Math.min(...lngs)-.06,maxLn=Math.max(...lngs)+.06;
+  const sx=v=>p+(v-minLn)/(maxLn-minLn)*(W-2*p), sy=v=>H-p-(v-minLa)/(maxLa-minLa)*(H-2*p);
+  // Luino ha due negozi a 80 m: piccolo scostamento per leggerli entrambi
+  const off={luino_yamamay:[-8,6],luino_carpisa:[8,-6]};
+  const anchor={arona:"start",gavirate:"start",luino_yamamay:"end",luino_carpisa:"start"};
+  const dx={arona:10,gavirate:10,luino_yamamay:-12,luino_carpisa:12};
+  let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Mappa schematica dei negozi">`;
+  g+=`<rect x="1" y="1" width="${W-2}" height="${H-2}" rx="10" fill="var(--bg)" stroke="var(--line)"/>`;
+  for(let i=1;i<4;i++){g+=`<line x1="${i*W/4}" x2="${i*W/4}" y1="8" y2="${H-8}" stroke="var(--line)" stroke-dasharray="2 5"/><line y1="${i*H/4}" y2="${i*H/4}" x1="8" x2="${W-8}" stroke="var(--line)" stroke-dasharray="2 5"/>`}
+  g+=`<text x="12" y="${H-12}" font-size="10" fill="var(--muted)">Lago Maggiore · sponde VA/NO</text>`;
+  STORES.forEach(s=>{const o=off[s.id]||[0,0];const x=sx(s.lng)+o[0],y=sy(s.lat)+o[1];
+    g+=`<a href="https://maps.google.com/?cid=${s.cid}" target="_blank" rel="noopener"><circle cx="${x}" cy="${y}" r="7" fill="${col(s)}" stroke="var(--surface)" stroke-width="2"/><text x="${x+dx[s.id]}" y="${y+4}" font-size="11.5" font-weight="600" fill="var(--ink)" text-anchor="${anchor[s.id]}">${s.name.replace("Yamamay ","Y · ").replace("Carpisa ","C · ")}</text></a>`});
+  g+="</svg>";$("#map").innerHTML=g;
+}
+
+function renderChart(){
+  $("#legend").innerHTML=STORES.map(s=>`<span><i style="background:${col(s)}"></i>${s.name}</span>`).join("");
+  const W=560,H=240,L=40,R=16,T=12,B=30;
+  if(SNAPS.length<2){
+    $("#chart").innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="min-width:420px" role="img" aria-label="Grafico in attesa di dati"><rect x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="var(--bg)" rx="8"/><text x="${W/2}" y="${H/2-6}" text-anchor="middle" font-size="13" fill="var(--ink)" font-weight="600">Il grafico si riempie giorno dopo giorno</text><text x="${W/2}" y="${H/2+14}" text-anchor="middle" font-size="12" fill="var(--muted)">${SNAPS.length?"Primo rilevamento: "+fmtDate(SNAPS[0].date)+". Dal secondo giorno compare la linea.":"Nessun rilevamento ancora."}</text></svg>`;
+    return;
+  }
+  const all=[];SNAPS.forEach(sn=>STORES.forEach(s=>{if(sn.stores[s.id])all.push(sn.stores[s.id].count)}));
+  let mn=Math.floor(Math.min(...all)/5)*5,mx=Math.ceil(Math.max(...all)/5)*5;if(mx===mn)mx+=5;
+  const n=SNAPS.length,x=i=>L+i*(W-L-R)/(n-1),y=v=>T+(1-(v-mn)/(mx-mn))*(H-T-B);
+  let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="min-width:420px" role="img" aria-label="Recensioni per negozio nel tempo">`;
+  const steps=4;for(let i=0;i<=steps;i++){const v=mn+(mx-mn)*i/steps;g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="10.5" fill="var(--muted)" class="num">${Math.round(v)}</text>`}
+  const ticks=Math.min(n,6);for(let k=0;k<ticks;k++){const i=Math.round(k*(n-1)/(ticks-1||1));g+=`<text x="${x(i)}" y="${H-10}" text-anchor="${k===0?"start":k===ticks-1?"end":"middle"}" font-size="10.5" fill="var(--muted)">${fmtShort(SNAPS[i].date)}</text>`}
+  STORES.forEach(s=>{const pts=SNAPS.map((sn,i)=>sn.stores[s.id]?[x(i),y(sn.stores[s.id].count)]:null).filter(Boolean);if(!pts.length)return;
+    g+=`<path d="${pts.map((q,i)=>(i?"L":"M")+q[0].toFixed(1)+" "+q[1].toFixed(1)).join(" ")}" fill="none" stroke="${col(s)}" stroke-width="2.2"/>`;
+    const e=pts[pts.length-1];g+=`<circle cx="${e[0]}" cy="${e[1]}" r="3.5" fill="${col(s)}"/>`});
+  g+="</svg>";$("#chart").innerHTML=g;
+}
+
+function renderAll(){renderSummary();renderStores();renderMap();renderChart()}
+renderAll();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",renderAll);
+new MutationObserver(renderAll).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+async function load(){
+  try{
+    const r=await fetch("/api/data",{credentials:"same-origin",cache:"no-store"});
+    if(r.status===401){showLogin();return}
+    if(!r.ok)throw new Error();
+    const j=await r.json();
+    const by={};
+    for(const row of j.snapshot){(by[row.data]=by[row.data]||{date:row.data,stores:{}}).stores[row.negozio]={rating:row.voto,count:row.recensioni}}
+    SNAPS=Object.values(by).sort((a,b)=>a.date<b.date?-1:1);
+    showApp();renderAll();
+  }catch(e){showApp();$("#stamp").textContent="Dati non disponibili in questo momento. Riprova tra poco."}
+}
+function showLogin(){$("#login").hidden=false;$("#app").hidden=true;setTimeout(()=>$("#user").focus(),50)}
+function showApp(){$("#login").hidden=true;$("#app").hidden=false}
+$("#loginform").addEventListener("submit",async ev=>{
+  ev.preventDefault();const err=$("#loginerr");err.textContent="";const b=$("#loginbtn");b.disabled=true;b.textContent="Accesso…";
+  try{
+    const r=await fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:$("#user").value.trim(),password:$("#pass").value})});
+    if(r.ok){$("#pass").value="";await load()}
+    else if(r.status===429){err.textContent="Troppi tentativi. Aspetta qualche minuto e riprova."}
+    else{err.textContent="Utente o password non corretti."}
+  }catch(e){err.textContent="Connessione non riuscita. Riprova."}
+  b.disabled=false;b.textContent="Entra";
+});
+$("#logout").addEventListener("click",async()=>{try{await fetch("/api/logout",{method:"POST"})}catch(e){}SNAPS=[];showLogin()});
+load();
+</script>
+</body>
+</html>

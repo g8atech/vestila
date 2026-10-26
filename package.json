@@ -1,0 +1,10 @@
+{
+  "name": "recensioni-vestila",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Dashboard riservata recensioni Google dei negozi Vestila",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "hash-password": "node scripts/hash-password.js"
+  }
+}
